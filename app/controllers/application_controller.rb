@@ -28,17 +28,22 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/posts/:id/edit' do
+    @post = Post.find_by_id(params[:id])
     erb :edit
   end
 
   patch '/posts/:id' do
-    @post = Post.find(params[:id])
+    @post = Post.find_by_id(params[:id])
+    @post.name = params[:name]
+    @post.content = params[:content]
     @post.save
-    redirect to '/posts/:id'
+    erb :show
   end
 
-  delete '/posts/:id' do
-    erb :show
+  delete '/posts/:id/delete' do
+    @post = Post.find_by_id(params[:id])
+    @post.delete
+    erb :deleted
   end
 
 
